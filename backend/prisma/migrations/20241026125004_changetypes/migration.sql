@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "FoodListing" ALTER COLUMN "quantity" SET DATA TYPE TEXT,
+ALTER COLUMN "longitude" SET DATA TYPE TEXT,
+ALTER COLUMN "latitude" SET DATA TYPE TEXT;

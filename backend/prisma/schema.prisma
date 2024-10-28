@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Donar {
+  id           String        @id @default(uuid())
+  role         DonarRole //RETAILER, RESTAURANT, INDIVIDUAL
+  name         String
+  businessName String?
+  email        String        @unique
+  password     String
+  number       String
+  address      String
+  pincode      String
+  city         String
+  FoodListings FoodListing[] @relation("CreatedByDonar")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum DonarRole {
+  RETAILER
+  RESTAURANT
+  INDIVIDUAL
+}
+
+model Receiver {
+  id           String       @id @default(uuid())
+  name         String
+  businessName String?
+  email        String       @unique
+  password     String
+  number       String
+  address      String
+  pincode      String
+  city         String
+  role         ReceiverRole //NGO, INDIVIDUAL
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Claim        Claim[]
+}
+
+enum ReceiverRole {
+  NGO
+  INDIVIDUAL
+}
+
+model FoodListing {
+  id             String        @id @default(uuid())
+  title          String
+  description    String
+  quantity       String // Quantity in units (e.g., pieces, kg)
+  pickupAddress  String?
+  longitude      String?
+  latitude       String?
+  expirationDate DateTime
+  status         ListingStatus // ENUM: AVAILABLE, CLAIMED, EXPIRED
+  Donar          Donar?        @relation("CreatedByDonar", fields: [donarId], references: [id])
+  donarId        String?
+  Claim          Claim[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Claim {
+  id            String      @id @default(uuid())
+  foodListing   FoodListing @relation(fields: [foodListingId], references: [id])
+  foodListingId String
+  claimant      Receiver    @relation(fields: [claimantId], references: [id])
+  claimantId    String
+  status        ClaimStatus
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum ListingStatus {
+  AVAILABLE
+  CLAIMED
+  EXPIRED
+}
+
+enum ClaimStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
+}
