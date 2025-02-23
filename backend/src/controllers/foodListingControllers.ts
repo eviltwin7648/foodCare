@@ -34,10 +34,8 @@ export const createFoodListing = async (req: Request, res: Response) => {
       data: {
         title,
         description,
-        quantity,
+        quantity:Number(quantity),
         pickupAddress,
-        longitude,
-        latitude,
         expirationDate: new Date(expirationDate),
         status: "AVAILABLE",
         Donar: { connect: { id: id }},

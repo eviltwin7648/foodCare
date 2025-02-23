@@ -87,13 +87,14 @@ const loginFunction = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             res.status(401).json({ error: "Invalid email or password." });
             return;
         }
+        console.log("Before JWT", user);
         // Generate JWT
         const token = jsonwebtoken_1.default.sign({
             id: user.id,
             email: user.email,
             role,
         }, process.env.JWT_SECRET);
-        console.log(user);
+        console.log("After JWT", user);
         res.json({
             message: "Login successful",
             token,
@@ -106,7 +107,9 @@ const loginFunction = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Could not log in." });
+        throw new Error;
     }
 });
 exports.loginFunction = loginFunction;

@@ -60,14 +60,12 @@ model FoodListing {
   id             String        @id @default(uuid())
   title          String
   description    String
-  quantity       String // Quantity in units (e.g., pieces, kg)
+  quantity      Int
   pickupAddress  String?
-  longitude      String?
-  latitude       String?
   expirationDate DateTime
   status         ListingStatus // ENUM: AVAILABLE, CLAIMED, EXPIRED
-  Donar          Donar?        @relation("CreatedByDonar", fields: [donarId], references: [id])
-  donarId        String?
+  Donar          Donar        @relation("CreatedByDonar", fields: [donarId], references: [id])
+  donarId        String
   Claim          Claim[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt

@@ -31,10 +31,8 @@ const createFoodListing = (req, res) => __awaiter(void 0, void 0, void 0, functi
             data: {
                 title,
                 description,
-                quantity,
+                quantity: Number(quantity),
                 pickupAddress,
-                longitude,
-                latitude,
                 expirationDate: new Date(expirationDate),
                 status: "AVAILABLE",
                 Donar: { connect: { id: id } },

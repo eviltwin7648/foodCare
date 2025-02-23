@@ -65,76 +65,59 @@ export default function CreateFoodListingPage() {
     <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Create Food Listing</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <label>Title</label>
         <input
           type="text"
           name="title"
           placeholder="Title"
           value={formData.title}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full border rounded"
           required
         />
+       {/* add a feature to add Image of the food */}
+        <label>Message</label>
         <textarea
           name="description"
-          placeholder="Description"
+          placeholder="Message"
           value={formData.description}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full border rounded"
           required
         />
+        <label >Quantity</label>
         <input
           type="number"
           name="quantity"
           placeholder="Quantity"
           value={formData.quantity}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full border rounded"
           required
         />
+        <label >PickUp Adress</label>
+
         <input
           type="text"
           name="pickupAddress"
           placeholder="Pickup Address"
           value={formData.pickupAddress}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full border rounded"
           required
         />
-        <input
-          type="number"
-          name="longitude"
-          placeholder="Longitude"
-          value={formData.longitude}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="number"
-          name="latitude"
-          placeholder="Latitude"
-          value={formData.latitude}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+
+       
+        <label >Expiration Date</label>
+
         <input
           type="date"
           name="expirationDate"
           value={formData.expirationDate}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full  border rounded"
           required
         />
-        {/* <input
-          type="text"
-          name="donarId"
-          placeholder="Donar ID"
-          value={formData.donarId}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        /> */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"

@@ -77,7 +77,7 @@ export const loginFunction = async (req: Request, res: Response) => {
        res.status(401).json({ error: "Invalid email or password." });
        return
     }
-
+console.log("Before JWT",user)
     // Generate JWT
     const token = jwt.sign(
       {
@@ -87,7 +87,7 @@ export const loginFunction = async (req: Request, res: Response) => {
       },
       process.env.JWT_SECRET as string
     );
-    console.log(user)
+    console.log("After JWT",user)
 
     res.json({
       message: "Login successful",
@@ -101,6 +101,8 @@ export const loginFunction = async (req: Request, res: Response) => {
     });
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: "Could not log in." });
+    throw new Error
   }
 };
