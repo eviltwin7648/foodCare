@@ -1,61 +1,98 @@
 "use client";
-// pages/login.tsx
 import { useState } from "react";
-import axios from "axios";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { Button } from "../components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/form"
+import { Input } from "../components/ui/input"
+
 import { useNavigate } from "react-router";
+import { authActions } from "../lib/actions";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email" }).min(1, { message: "Email is required" }),
+  password: z.string()
+})
+
+
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate()
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password },);
-      alert("Login successful");
-      console.log(response.data);
-      localStorage.setItem("role", response.data.user.role);
-      localStorage.setItem("token", response.data.token);
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const response = await authActions.login(data)
+    if (response.error) {
+      setError(response.error)
+    } else {
       navigate('/')
-    } catch (error) {
-      console.log(error);
-      alert("Login failed");
     }
-  };
+  }
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-700">E-Mail</label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="text"
-              placeholder="Enter Your Email"
-              className="border border-gray-300 p-3 rounded-lg w-full"
+        <h2 className="text-2xl font-normal mb-6 text-center">Welcome to ShareMeal</h2>
+        <Form {...form}>
+
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="Enter your email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-700">Password</label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              type="password"
-              placeholder="Enter Your Password"
-              className="border border-gray-300 p-3 rounded-lg w-full"
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Enter your password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <button
-            type="submit"
-            className="bg-[#FE724C] text-white py-3 rounded-full hover:bg-[#e6623d]"
-          >
-            Login
-          </button>
-        </form>
+            <p className={`text-red-500 text-sm py-0 ${error ? "block" : "hidden"}`}>{error}</p>
+            <Button type="submit" className="w-full bg-[#FE724C] hover:bg-[#fe724c]/90">
+              Login
+            </Button>
+          </form>
+        </Form>
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <p className="px-4 ">or</p>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+        <Button onClick={() => navigate('/signup')} className="w-full bg-white text-black border border-black">
+          Signup
+        </Button>
       </div>
     </div>
   );

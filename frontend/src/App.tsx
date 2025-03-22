@@ -7,8 +7,8 @@ import FoodDetails from "./pages/FoodDetail";
 import RegisterReceiver from "./pages/RegisterReceiver";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/Login";
-import Form from "./components/Sign-up-Form/Form";
-
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 const MainLayout = () => {
   return (
     <>
@@ -25,8 +25,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<Form />} />
-
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/register/donar" element={<DonarPage />} />
             <Route path="/createlisting" element={<CreateFoodListingPage />} />
             <Route path="/" element={<Home />} />

@@ -79,7 +79,14 @@ const getFoodListingById = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(404).json({ error: "Listing not found." });
             return;
         }
-        res.json(listing);
+        const donar = yield prisma.donar.findUnique({
+            where: {
+                id: listing.donarId,
+            },
+        });
+        const response = Object.assign(Object.assign({}, listing), { donarName: donar === null || donar === void 0 ? void 0 : donar.name, donarContact: donar === null || donar === void 0 ? void 0 : donar.number });
+        console.log(response);
+        res.json(response);
     }
     catch (error) {
         console.log(error);

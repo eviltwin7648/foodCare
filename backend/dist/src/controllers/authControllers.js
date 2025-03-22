@@ -16,17 +16,19 @@ exports.loginFunction = exports.registerReceiver = exports.registerDonor = void 
 const client_1 = require("@prisma/client");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv").config();
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const prisma = new client_1.PrismaClient();
 // Register a new Donor
 const registerDonor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, role, number, address, pincode, city } = req.body;
     console.log(req.body);
+    const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         const newDonor = yield prisma.donar.create({
             data: {
                 name,
                 email,
-                password,
+                password: hashedPassword,
                 role,
                 number,
                 address,
@@ -35,7 +37,7 @@ const registerDonor = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             },
         });
         console.log(newDonor);
-        res.json(newDonor);
+        res.json({ message: "Donor registered successfully" });
     }
     catch (error) {
         console.log(error);
@@ -46,12 +48,13 @@ exports.registerDonor = registerDonor;
 // Register a new Receiver
 const registerReceiver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, role, number, address, pincode, city } = req.body;
+    const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         const newReceiver = yield prisma.receiver.create({
             data: {
                 name,
                 email,
-                password, // Ideally, hash this before saving
+                password: hashedPassword,
                 role,
                 number,
                 address,
@@ -59,31 +62,26 @@ const registerReceiver = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 city,
             },
         });
-        res.json(newReceiver);
+        res.json({ message: "Receiver registered successfully" });
     }
     catch (error) {
         res.status(500).json({ error: "Could not register receiver." });
     }
 });
 exports.registerReceiver = registerReceiver;
-// Implement login logic, including password validation and JWT generation
-// Login for both Donor and Receiver
 const loginFunction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
-        // Look for the user in both Donor and Receiver tables
         const donor = yield prisma.donar.findUnique({ where: { email } });
         const receiver = yield prisma.receiver.findUnique({ where: { email } });
-        // Determine the role and user data based on which table the user was found in
         const user = donor || receiver;
         const role = donor ? "Donor" : receiver ? "Receiver" : null;
-        // If user is not found
         if (!user || !role) {
             res.status(401).json({ error: "Invalid email or password." });
             return;
         }
-        // Verify password
-        if (user.password !== password) {
+        const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
+        if (!isPasswordValid) {
             res.status(401).json({ error: "Invalid email or password." });
             return;
         }

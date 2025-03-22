@@ -87,7 +87,18 @@ export const getFoodListingById = async (req: Request, res: Response) => {
       res.status(404).json({ error: "Listing not found." });
       return;
     }
-    res.json(listing);
+    const donar = await prisma.donar.findUnique({
+      where: {
+        id: listing.donarId,
+      },
+    });
+    const response = {
+      ...listing,
+      donarName: donar?.name,
+      donarContact: donar?.number,
+    };
+    console.log(response);
+    res.json(response);
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: "Could not fetch food listing." });

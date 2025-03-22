@@ -2,18 +2,20 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 // Register a new Donor
 export const registerDonor = async (req: Request, res: Response) => {
   const { name, email, password, role, number, address, pincode, city } =req.body;
     console.log(req.body)
+    const hashedPassword = await  bcrypt.hash(password, 10);
   try {
     const newDonor = await prisma.donar.create({
       data: {
         name,
         email,
-        password,
+        password:hashedPassword,
         role,
         number,
         address,
@@ -22,7 +24,7 @@ export const registerDonor = async (req: Request, res: Response) => {
       },
     });
     console.log(newDonor)
-    res.json(newDonor);
+    res.json({message: "Donor registered successfully"});
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: "Could not register donor." });
@@ -33,12 +35,13 @@ export const registerDonor = async (req: Request, res: Response) => {
 export const registerReceiver = async (req: Request, res: Response) => {
   const { name, email, password, role, number, address, pincode, city } =
     req.body;
+    const hashedPassword = await  bcrypt.hash(password, 10);
   try {
     const newReceiver = await prisma.receiver.create({
       data: {
         name,
         email,
-        password, // Ideally, hash this before saving
+        password:hashedPassword,
         role,
         number,
         address,
@@ -46,34 +49,30 @@ export const registerReceiver = async (req: Request, res: Response) => {
         city,
       },
     });
-    res.json(newReceiver);
+    res.json({message: "Receiver registered successfully"});
   } catch (error) {
     res.status(500).json({ error: "Could not register receiver." });
   }
 };
 
-// Implement login logic, including password validation and JWT generation
-// Login for both Donor and Receiver
+
 export const loginFunction = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    // Look for the user in both Donor and Receiver tables
     const donor = await prisma.donar.findUnique({ where: { email } });
     const receiver = await prisma.receiver.findUnique({ where: { email } });
 
-    // Determine the role and user data based on which table the user was found in
     const user = donor || receiver;
     const role = donor ? "Donor" : receiver ? "Receiver" : null;
 
-    // If user is not found
     if (!user || !role) {
        res.status(401).json({ error: "Invalid email or password." });
        return
     }
 
-    // Verify password
-    if (user.password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
        res.status(401).json({ error: "Invalid email or password." });
        return
     }
