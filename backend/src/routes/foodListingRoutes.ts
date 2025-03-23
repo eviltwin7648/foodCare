@@ -33,8 +33,11 @@ router.post("/:id/claim", authMiddleware, async (req, res) => {
         where: { id },
       });
 
-      if (!foodListing || foodListing.status !== "AVAILABLE") {
+      if (!foodListing) {
         res.status(400).json({ error: "Food listing is not available for claim." });
+        return
+      }else if (foodListing.status !== "AVAILABLE") {
+        res.status(400).json({error:"Food listing has already been claimed."})
         return
       }
 

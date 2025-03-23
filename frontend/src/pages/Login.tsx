@@ -38,6 +38,7 @@ export default function LoginPage() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const response = await authActions.login(data)
+    console.log("response", response)
     if (response.error) {
       setError(response.error)
     } else {
@@ -90,7 +91,7 @@ export default function LoginPage() {
           <p className="px-4 ">or</p>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
-        <Button onClick={() => navigate('/signup')} className="w-full bg-white text-black border border-black">
+        <Button onClick={() => navigate('/signup')} variant="outline" className="w-full">
           Signup
         </Button>
       </div>

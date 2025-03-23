@@ -61,24 +61,24 @@ export default function Dashboard() {
       try {
         setIsLoading(true);
         
-        // Fetch profile
         const profileData = await dashboardActions.getProfile();
         setProfile(profileData);
+        const type = localStorage.getItem("role");
+        setProfile({...profileData, type:type || "" })
 
-        // Fetch statistics
         const statsData = await dashboardActions.getStats();
         setStats(statsData);
 
-        // Fetch user's listings if they're a donor
         if (role === "Donor") {
           const myListingsData = await dashboardActions.getDonations();
           setMyListings(myListingsData);
         }
 
-        // Fetch claimed listings if they're a receiver
         if (role === "Receiver") {
           const claimedData = await dashboardActions.getClaims();
-          setClaimedListings(claimedData);
+          console.log("claimedData", claimedData[0].foodListing)
+          const foodListing = claimedData.map((claim)=>claim.foodListing)
+          setClaimedListings(foodListing);
         }
       } catch (error) {
         console.error(error);
@@ -113,7 +113,6 @@ export default function Dashboard() {
         description: "Food claimed successfully.",
       });
       
-      // Refresh the claimed listings
       const claimedData = await dashboardActions.getClaims();
       setClaimedListings(claimedData);
     } catch (error) {

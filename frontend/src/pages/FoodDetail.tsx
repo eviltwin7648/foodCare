@@ -32,7 +32,7 @@ export default function FoodDetails() {
 
   const handleClaim = async () => {
     const role = localStorage.getItem("role");
-    if (role !== "NGO" && role !== "INDIVIDUAL") {
+    if (role !== "Receiver") {
       setError("You must be a receiver to claim food");
       return;
     }
@@ -47,8 +47,12 @@ export default function FoodDetails() {
           },
         }
       );
-      console.log(response.data);
-      navigate("/dashboard");
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        console.log(response.data);
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error(error);
       setError("Failed to claim food");

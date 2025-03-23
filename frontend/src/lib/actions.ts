@@ -123,13 +123,13 @@ export const authActions = {
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("role", response.data.user.role);
       }
       return response.data;
     } catch (error) {
       handleApiError(error);
     }
   },
-
 
   register: async (data: {
     name: string;
@@ -142,7 +142,8 @@ export const authActions = {
     pincode: string;
   }, category: string) => {
     try {
-      const endpoint = category === "Donor" ? "/auth/register/receiver" : "/auth/register/donar";
+      const endpoint = category === "Donor" ? "/auth/register/donar" : "/auth/register/receiver";
+      console.log(endpoint)
       const response = await axios.post(`${API_BASE_URL}${endpoint}`, data);
       return response.data;
     } catch (error) {
