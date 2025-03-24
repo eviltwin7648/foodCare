@@ -34,10 +34,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker pull eviltwin7648/foodcare-frontend:latest
-            docker stop foodcare-frontend || true
-            docker rm foodcare-frontend || true
-            sudo docker run -d --name foodcare-frontend -p 3000:3000 eviltwin7648/foodcare-frontend:latest
+            sudo docker pull eviltwin7648/foodcare-frontend:latest
+            sudo docker stop foodcare-frontend || true
+            sudo docker rm foodcare-frontend || true
+            sudo docker run -d --name foodcare-frontend -p 4173:4173 eviltwin7648/foodcare-frontend:latest
 
 
 
