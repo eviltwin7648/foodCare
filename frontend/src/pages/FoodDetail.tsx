@@ -39,7 +39,7 @@ export default function FoodDetails() {
     
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/food-listings/${id}/claim`,
+        import.meta.env.VITE_API_URL + "/api/food-listings/${id}/claim",
         {},
         {
           headers: {
@@ -66,7 +66,7 @@ export default function FoodDetails() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/api/food-listings/${id}`
+          import.meta.env.VITE_API_URL + `/api/food-listings/${id}`
         );
         setFoodDetails(response.data);
       } catch (error) {

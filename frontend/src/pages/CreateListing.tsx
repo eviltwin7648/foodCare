@@ -38,7 +38,7 @@ export default function CreateFoodListingPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/food-listings",
+        import.meta.env.VITE_API_URL + "/api/food-listings",
         formData,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

@@ -21,7 +21,7 @@ const FoodListings = () => {
       try {
         setLoading(true);
         const response = await axios.get<FoodListing[]>(
-          "http://localhost:5000/api/food-listings"
+          import.meta.env.VITE_API_URL + "/api/food-listings"
         );
         setFoodListings(response.data);
         setError("");
