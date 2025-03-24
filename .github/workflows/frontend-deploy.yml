@@ -37,7 +37,7 @@ jobs:
             sudo docker pull eviltwin7648/foodcare-frontend:latest
             sudo docker stop foodcare-frontend || true
             sudo docker rm foodcare-frontend || true
-            sudo docker run -e VITE_API_URL=http://localhost:3004 -d --name foodcare-frontend -p 5173:5173 eviltwin7648/foodcare-frontend:latest
+            sudo docker run -e VITE_API_URL=http://localhost:3004 -d --name foodcare-frontend -p 4173:4173 eviltwin7648/foodcare-frontend:latest
 
 
 
