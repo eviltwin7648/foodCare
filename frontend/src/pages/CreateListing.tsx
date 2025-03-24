@@ -6,7 +6,7 @@ import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
-import { AlertCircle, Loader2, Package, MapPin, Calendar } from "lucide-react";
+import { Loader2, Package, MapPin, Calendar } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 
 export default function CreateFoodListingPage() {

@@ -39,7 +39,7 @@ type FormData = z.infer<typeof userSchema>;
 export default function Signup() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [category, setCategory] = useState<"Donor" | "Receiver">("Donor");
+  const [category, setCategory] = useState<"Donor"|"Receiver">("Donor");
   const [error, setError] = useState("")
 
   const form = useForm<FormData>({

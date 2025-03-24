@@ -5,7 +5,7 @@ import { Card } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { Loader2, Plus, Package, MapPin, Calendar, User, AlertCircle, Edit2, Save, X } from "lucide-react";
+import {  Plus, Package, MapPin, Calendar,  AlertCircle, Edit2, Save, X } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 import { dashboardActions, foodListingActions } from "../lib/actions";
 
@@ -77,7 +77,7 @@ export default function Dashboard() {
         if (role === "Receiver") {
           const claimedData = await dashboardActions.getClaims();
           console.log("claimedData", claimedData[0].foodListing)
-          const foodListing = claimedData.map((claim)=>claim.foodListing)
+          const foodListing = claimedData.map((claim:any)=>claim.foodListing)
           setClaimedListings(foodListing);
         }
       } catch (error) {

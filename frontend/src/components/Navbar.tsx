@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Logo } from "./logo";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
