@@ -1,0 +1,42 @@
+name: Build and Deploy to DockerHub and EC2
+
+on: 
+ push:
+  branches:
+    - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CheckOut Repo
+        uses: actions/checkout@v3
+
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push to DockerHub
+        uses: docker/build-push-action@v1
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: eviltwin7648/foodcare-backend:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}  
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull eviltwin7648/foodcare-backend:latest
+            docker stop foodcare-backend || true
+            docker rm foodcare-backend || true
+            sudo docker run -e DATABASE_URL=${{ secrets.DATABASE_URL }} -d --name foodcare-backend -p 3004:3000 eviltwin7648/foodcare-backend:latest
+
+
