@@ -23,9 +23,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push to DockerHub
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./backend
           file: ./backend/Dockerfile
           push: true
           tags: eviltwin7648/foodcare-backend:latest
