@@ -13,7 +13,10 @@ const dashboardRoutes_1 = __importDefault(require("./routes/dashboardRoutes"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "https://sharemeal.vishalrai.tech"
+}));
+//hey there
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api/donar", donarRoutes_1.default);
 app.use("/api/receiver", receiverRoutes_1.default);
@@ -22,5 +25,5 @@ app.use("/api/food-listings", foodListingRoutes_1.default);
 app.use("/api/dashboard", dashboardRoutes_1.default);
 app.get('/api/dashboard/donar/:id', (req, res) => { });
 app.get('/api/dashboard/receiver/:id', (req, res) => { });
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

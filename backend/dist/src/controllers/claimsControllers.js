@@ -34,7 +34,8 @@ const getClaims = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getClaims = getClaims;
 const getClaimbyID = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.getClaimbyID = getClaimbyID;
-const updateClaim = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateClaim = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
 exports.updateClaim = updateClaim;
 const deleteClaim = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.deleteClaim = deleteClaim;
