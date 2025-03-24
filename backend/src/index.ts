@@ -11,8 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://sharemeal.vishalrai.tech"
-}))
+    origin: "https://sharemeal.vishalrai.tech"}))
 
 //hey there
 

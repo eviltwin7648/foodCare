@@ -37,9 +37,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker pull eviltwin7648/foodcare-backend:latest
-            docker stop foodcare-backend || true
-            docker rm foodcare-backend || true
+            sudo docker pull eviltwin7648/foodcare-backend:latest
+            sudo docker stop foodcare-backend || true
+            sudo docker rm foodcare-backend || true
             sudo docker run -e DATABASE_URL=${{ secrets.DATABASE_URL }} -d --name foodcare-backend -p 3004:3000 eviltwin7648/foodcare-backend:latest
 
 
