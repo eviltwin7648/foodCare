@@ -21,5 +21,6 @@ export const createClaim = async (req: Request, res: Response) => {
 
 export const getClaims = async (req: Request, res: Response) => {};
 export const getClaimbyID = async (req: Request, res: Response) => {};
-export const updateClaim = async (req: Request, res: Response) => {};
+export const updateClaim = async (req: Request, res: Response) => {
+};
 export const deleteClaim = async (req: Request, res: Response) => {};

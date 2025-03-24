@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma generate && npx prisma db:seed
+RUN npx prisma generate 
 
 CMD ["npm", "run", "start"]
