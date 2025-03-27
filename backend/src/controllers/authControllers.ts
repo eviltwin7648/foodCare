@@ -12,7 +12,7 @@ export const registerDonor = async (req: Request, res: Response) => {
     const hashedPassword = await  bcrypt.hash(password, 10);
   try {
     const newDonor = await prisma.donar.create({
-      data: {
+      data:{
         name,
         email,
         password:hashedPassword,
