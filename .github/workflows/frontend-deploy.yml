@@ -34,10 +34,15 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            # Pull latest image
             sudo docker pull eviltwin7648/foodcare-frontend:latest
+
+            # Stop and remove old container
             sudo docker stop foodcare-frontend || true
             sudo docker rm foodcare-frontend || true
+
+            # Remove unused images to free up space
+            sudo docker system prune -af
+
+            # Run the new container
             sudo docker run -e VITE_API_URL=https://api.sharemeal.vishalrai.tech -d --name foodcare-frontend -p 4173:4173 eviltwin7648/foodcare-frontend:latest
-
-
-

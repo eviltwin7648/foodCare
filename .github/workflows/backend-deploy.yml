@@ -7,14 +7,12 @@ on:
     paths:
       - backend/**
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: CheckOut Repo
         uses: actions/checkout@v3
-
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -37,9 +35,15 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            # Pull latest image
             sudo docker pull eviltwin7648/foodcare-backend:latest
+
+            # Stop and remove old container
             sudo docker stop foodcare-backend || true
             sudo docker rm foodcare-backend || true
+
+            # Remove unused images to free up space
+            sudo docker system prune -af
+
+            # Run the new container
             sudo docker run -e DATABASE_URL=${{ secrets.DATABASE_URL }} -d --name foodcare-backend -p 5000:5000 eviltwin7648/foodcare-backend:latest
-
-
