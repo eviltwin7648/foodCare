@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const claimsControllers_1 = require("../controllers/claimsControllers");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const router = (0, express_1.Router)();
+router.get("/", claimsControllers_1.getClaims);
+router.get("/:id", claimsControllers_1.getClaimbyID);
+router.put("/:id", claimsControllers_1.updateClaim);
+router.delete("/:id", claimsControllers_1.deleteClaim);
+router.post("/", authMiddleware_1.authMiddleware, claimsControllers_1.createClaim);
+exports.default = router;

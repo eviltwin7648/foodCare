@@ -13,6 +13,12 @@ import {
   FormMessage,
 } from "../components/ui/form"
 import { Input } from "../components/ui/input"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../components/ui/hover-card"
+
 
 import { useNavigate } from "react-router";
 import { authActions } from "../lib/actions";
@@ -39,7 +45,7 @@ export default function LoginPage() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const response = await authActions.login(data)
     console.log("response", response)
-    if (response.error) {
+    if (response?.error) {
       setError(response.error)
     } else {
       navigate('/')
@@ -49,7 +55,10 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+
+
         <h2 className="text-2xl font-normal mb-6 text-center">Welcome to ShareMeal</h2>
         <Form {...form}>
 
@@ -94,6 +103,17 @@ export default function LoginPage() {
         <Button onClick={() => navigate('/signup')} variant="outline" className="w-full">
           Signup
         </Button>
+        <HoverCard>
+          <HoverCardTrigger className="text-xs mt-2 mb-0 underline cursor-pointer ">testing the application?</HoverCardTrigger>
+          <HoverCardContent>
+              <h3>Receiver</h3>
+              <p className="text-xs">Username: priyanshu@gmail.com</p>
+              <p className="text-xs">Password: priyanshu</p>
+              <h3>Donar</h3>
+              <p className="text-xs">Username: john@restaurant.com</p>
+              <p className="text-xs">Password: password123 </p>
+          </HoverCardContent>
+        </HoverCard>
       </div>
     </div>
   );

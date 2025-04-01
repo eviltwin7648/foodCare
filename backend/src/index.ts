@@ -11,9 +11,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://sharemeal.vishalrai.tech"}))
+    // origin: "http://localhost:5000"
+}))
 
-//hey there
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/donar", donarRoutes);

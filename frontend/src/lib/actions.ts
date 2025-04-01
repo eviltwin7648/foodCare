@@ -10,12 +10,12 @@ const getAuthHeader = () => {
 
 // Helper function to handle API errors
 const handleApiError = (error: any) => {
-  console.error("API Error:", error);
-  throw {
-    message: error.response?.data?.error || "Something went wrong",
-    status: error.response?.status || 500,
-  };
+  if (axios.isAxiosError(error)) {
+    return { error: error.response?.data?.message || "Unauthorized access" };
+  }
+  return { error: "Something went wrong. Please try again later." };
 };
+
 
 // Dashboard Actions
 export const dashboardActions = {
@@ -127,7 +127,7 @@ export const authActions = {
       }
       return response.data;
     } catch (error) {
-      handleApiError(error);
+     return handleApiError(error);
     }
   },
 

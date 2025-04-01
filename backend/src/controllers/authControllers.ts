@@ -94,7 +94,7 @@ console.log("Before JWT",user)
       user: {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: role,
         name: user.name,
       },
     });
